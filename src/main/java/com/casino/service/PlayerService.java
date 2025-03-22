@@ -3,6 +3,7 @@ package com.casino.service;
 import com.casino.entity.Player;
 import com.casino.exception.PlayerNotFoundException;
 import com.casino.exception.PlayerUnderageException;
+import com.casino.exception.PlayerUsernameExistsException;
 import com.casino.repository.PlayerRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,12 +28,21 @@ public class PlayerService {
             throw new PlayerUnderageException("Player must be at least 18 years old");
         }
 
+        // Check if username is unique
+        if (usernameExists(player.getUsername())) {
+            throw new PlayerUsernameExistsException("Username already exists");
+        }
+
         // Hash the password
         String hashedPassword = passwordEncoder.encode(player.getPassword());
         player.setPassword(hashedPassword);
 
         // Save the player
         return playerRepo.save(player);
+    }
+
+    public boolean usernameExists(String username) {
+        return playerRepo.existsByUsername(username);
     }
 
     private boolean isUnderage(LocalDate birthdate) {
