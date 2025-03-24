@@ -23,21 +23,17 @@ public class PlayerService {
     }
 
     public Player registerPlayer(Player player) {
-        // Validate player age
         if (isUnderage(player.getBirthdate())) {
             throw new PlayerUnderageException("Player must be at least 18 years old");
         }
 
-        // Check if username is unique
         if (usernameExists(player.getUsername())) {
             throw new PlayerUsernameExistsException("Username already exists");
         }
 
-        // Hash the password
         String hashedPassword = passwordEncoder.encode(player.getPassword());
         player.setPassword(hashedPassword);
 
-        // Save the player
         return playerRepo.save(player);
     }
 
@@ -67,14 +63,24 @@ public class PlayerService {
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
     }
 
-    public void deposit(Long playerId, double amount) {
-        Player player = getPlayerById(playerId);
+    public double deposit(String username, double amount) {
+        Player player = playerRepo.findByUsername(username)
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive");
+        }
+
         player.setBalance(player.getBalance() + amount);
         playerRepo.save(player);
+
+        return player.getBalance();
     }
 
-    public double getBalance(Long playerId) {
-        Player player = getPlayerById(playerId);
+    public double getBalance(String username) {
+        Player player = playerRepo.findByUsername(username)
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
+
         return player.getBalance();
     }
 }
