@@ -9,8 +9,6 @@ import com.casino.exception.InvalidBetAmountException;
 import com.casino.repository.BetRepo;
 import com.casino.repository.GameRepo;
 import com.casino.repository.PlayerRepo;
-import com.casino.specification.BetSpecifications;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
