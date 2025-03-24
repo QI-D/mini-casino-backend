@@ -58,8 +58,8 @@ public class PlayerService {
         return player;
     }
 
-    public Player getPlayerById(Long id) {
-        return playerRepo.findById(id)
+    public Player getPlayerByUsername(String username) {
+        return playerRepo.findByUsername(username)
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
     }
 
