@@ -1,5 +1,6 @@
 package com.casino.service;
 
+import com.casino.dto.BetSummaryDto;
 import com.casino.entity.Bet;
 import com.casino.entity.Game;
 import com.casino.entity.Player;
@@ -62,29 +63,22 @@ public class BetService {
         return betRepo.save(bet);
     }
 
-    public List<Bet> getBetsByPlayer(Long playerId) {
-        return betRepo.findByPlayerId(playerId);
-    }
+    public BetSummaryDto getBetSummary(Long playerId) {
+        List<Bet> playerBets = betRepo.findByPlayerId(playerId);
 
-    public List<Bet> getBets(Long playerId, Long gameId, Boolean won, Double minBet, Double maxBet) {
-        Specification<Bet> spec = Specification.where(null);
+        int totalBets = playerBets.size();
+        double totalBetAmount = playerBets.stream()
+                .mapToDouble(Bet::getBetAmount)
+                .sum();
+        double totalWinnings = playerBets.stream()
+                .mapToDouble(Bet::getWinnings)
+                .sum();
 
-        if (playerId != null) {
-            spec = spec.and(BetSpecifications.hasPlayerId(playerId));
-        }
-        if (gameId != null) {
-            spec = spec.and(BetSpecifications.hasGameId(gameId));
-        }
-        if (won != null) {
-            spec = spec.and(BetSpecifications.hasWon(won));
-        }
-        if (minBet != null) {
-            spec = spec.and(BetSpecifications.hasMinBet(minBet));
-        }
-        if (maxBet != null) {
-            spec = spec.and(BetSpecifications.hasMaxBet(maxBet));
-        }
-
-        return betRepo.findAll(spec);
+        return BetSummaryDto.builder()
+                .totalBets(totalBets)
+                .totalBetAmount(totalBetAmount)
+                .totalWinnings(totalWinnings)
+                .netProfit(totalWinnings - totalBetAmount)
+                .build();
     }
 }

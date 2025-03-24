@@ -32,4 +32,5 @@ public class Response {
     private List<BetDto> betList;
 
     private Double balance;
+    private BetSummaryDto betSummary;
 }
