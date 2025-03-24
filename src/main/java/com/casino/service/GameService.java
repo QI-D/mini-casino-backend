@@ -36,11 +36,6 @@ public class GameService {
                 .filter(game -> !existingNames.contains(game.getName()))
                 .collect(Collectors.toList());
 
-        if (uniqueGames.size() < games.size()) {
-            int duplicates = games.size() - uniqueGames.size();
-            throw new DuplicateGameException(duplicates + " duplicate games found");
-        }
-
         return gameRepo.saveAll(uniqueGames);
     }
 }
