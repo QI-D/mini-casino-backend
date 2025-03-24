@@ -42,7 +42,6 @@ class AuthControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Setup test player
         testPlayer = new Player();
         testPlayer.setUsername(TEST_USERNAME);
         testPlayer.setPassword("encodedPassword");
@@ -56,7 +55,6 @@ class AuthControllerTest {
     @Test
     @DisplayName("Should reject registration for underage player")
     void testRegister_UnderagePlayer() {
-        // Arrange
         PlayerDto underagePlayer = new PlayerDto();
         underagePlayer.setUsername("underage_user");
         underagePlayer.setPassword("test123");
@@ -66,7 +64,6 @@ class AuthControllerTest {
         when(playerService.registerPlayer(any()))
                 .thenThrow(new PlayerUnderageException("Player must be at least 18 years old"));
 
-        // Act & Assert
         Exception exception = assertThrows(PlayerUnderageException.class, () -> {
             authController.registerPlayer(underagePlayer);
         });
@@ -78,15 +75,12 @@ class AuthControllerTest {
     @Test
     @DisplayName("Should register new player successfully")
     void testRegisterPlayer_Success() {
-        // Arrange
         when(playerMapper.toEntity(any(PlayerDto.class))).thenReturn(testPlayer);
         when(playerService.registerPlayer(any(Player.class))).thenReturn(testPlayer);
         when(playerMapper.toDto(any(Player.class))).thenReturn(testPlayerDto);
 
-        // Act
         Response response = authController.registerPlayer(testPlayerDto);
 
-        // Assert
         assertEquals(200, response.getStatus());
         assertEquals("Player registered successfully", response.getMessage());
         assertEquals(TEST_USERNAME, response.getPlayer().getUsername());
@@ -96,7 +90,6 @@ class AuthControllerTest {
     @Test
     @DisplayName("Should login successfully with valid credentials")
     void testLogin_Success() {
-        // Arrange
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(TEST_USERNAME);
         loginRequest.setPassword(TEST_PASSWORD);
@@ -104,10 +97,8 @@ class AuthControllerTest {
         when(jwtUtils.generateToken(testPlayer)).thenReturn("mockToken");
         when(playerMapper.toDto(testPlayer)).thenReturn(testPlayerDto);
 
-        // Act
         Response response = authController.login(loginRequest);
 
-        // Assert
         assertEquals(200, response.getStatus());
         assertEquals("Login successful", response.getMessage());
         assertEquals("mockToken", response.getToken());
@@ -117,24 +108,12 @@ class AuthControllerTest {
     @Test
     @DisplayName("Should fail login with invalid credentials")
     void testLogin_InvalidCredentials() {
-        // Arrange
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(TEST_USERNAME);
         loginRequest.setPassword("wrongpassword");
         when(playerService.authenticate(TEST_USERNAME, "wrongpassword"))
                 .thenThrow(new RuntimeException("Invalid credentials"));
 
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> authController.login(loginRequest));
     }
-
-//    @Test
-//    @DisplayName("Should delete player successfully")
-//    void testDeletePlayer_Success() {
-//        Response response = authController.deletePlayer(TEST_USERNAME);
-//
-//        assertEquals(200, response.getStatus());
-//        assertEquals("Player deleted successfully", response.getMessage());
-//        verify(playerService, times(1)).deletePlayer(TEST_USERNAME);
-//    }
 }
