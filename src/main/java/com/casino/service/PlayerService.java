@@ -4,7 +4,6 @@ import com.casino.entity.Player;
 import com.casino.exception.PlayerNotFoundException;
 import com.casino.exception.PlayerUnderageException;
 import com.casino.exception.PlayerUsernameExistsException;
-import com.casino.repository.BetRepo;
 import com.casino.repository.PlayerRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,13 +16,11 @@ import java.time.Period;
 @Slf4j
 public class PlayerService {
     private final PlayerRepo playerRepo;
-    private final BetRepo betRepo;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public PlayerService(PlayerRepo playerRepo, BetRepo betRepo) {
+    public PlayerService(PlayerRepo playerRepo) {
 
         this.playerRepo = playerRepo;
-        this.betRepo = betRepo;
     }
 
     public Player registerPlayer(Player player) {
