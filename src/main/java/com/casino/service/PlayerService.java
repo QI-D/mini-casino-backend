@@ -19,7 +19,6 @@ public class PlayerService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public PlayerService(PlayerRepo playerRepo) {
-
         this.playerRepo = playerRepo;
     }
 
@@ -83,12 +82,5 @@ public class PlayerService {
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
 
         return player.getBalance();
-    }
-
-    public void deletePlayer(String username) {
-        Player player = playerRepo.findByUsername(username)
-                .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
-
-        playerRepo.delete(player);
     }
 }
