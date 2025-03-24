@@ -54,4 +54,49 @@ public class GlobalExceptionHandler {
                 .message(ex.getMessage())
                 .build();
     }
+
+    @ExceptionHandler(PlayerUsernameExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response handlePlayerUsernameExistsException(PlayerUsernameExistsException ex) {
+        return Response.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response handleInvalidCredentialsException(InvalidCredentialsException  ex) {
+        return Response.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(DuplicateGameException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response handleDuplicateGameException(DuplicateGameException  ex) {
+        return Response.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response handleGameNotFoundException(GameNotFoundException  ex) {
+        return Response.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(InvalidGameDataException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response handleInvalidGameDataException(InvalidGameDataException ex) {
+        return Response.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .build();
+    }
 }
