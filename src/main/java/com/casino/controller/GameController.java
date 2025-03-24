@@ -3,6 +3,7 @@ package com.casino.controller;
 import com.casino.dto.GameDto;
 import com.casino.dto.Response;
 import com.casino.entity.Game;
+import com.casino.exception.DuplicateGameException;
 import com.casino.mapper.GameMapper;
 import com.casino.repository.GameRepo;
 import com.casino.service.GameService;
@@ -49,14 +50,21 @@ public class GameController {
     }
 
     @PostMapping("/upload")
-    public Response uploadGames(@RequestParam("gameFile") MultipartFile gameFile) {
+    public Response uploadGames(@RequestParam("file") MultipartFile file) {
         try {
-            List<Game> games = GameXmlParser.parseXmlFile(gameFile);
-            gameService.saveAllGames(games);
+            List<Game> games = GameXmlParser.parseXmlFile(file);
+            List<Game> savedGames = gameService.saveAllGames(games);
+
             return Response.builder()
                     .status(200)
-                    .message(games.size() + " games uploaded successfully")
-                    .gameList(gameMapper.toDtoList(games))
+                    .message(savedGames.size() + "/" + games.size() + " games uploaded successfully")
+                    .gameList(gameMapper.toDtoList(savedGames))
+                    .build();
+
+        } catch (DuplicateGameException e) {
+            return Response.builder()
+                    .status(400)
+                    .message(e.getMessage())
                     .build();
         } catch (Exception e) {
             return Response.builder()
