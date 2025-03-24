@@ -7,6 +7,7 @@ import com.casino.entity.Player;
 import com.casino.mapper.PlayerMapper;
 import com.casino.security.JwtUtils;
 import com.casino.service.PlayerService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,6 +46,16 @@ public class AuthController {
                 .token(token)
                 .expirationTime("6 month")
                 .player(playerDto)
+                .build();
+    }
+
+    @DeleteMapping("/delete/{username}")
+    @Transactional
+    public Response deletePlayer(@PathVariable String username) {
+        playerService.deletePlayer(username);
+        return Response.builder()
+                .status(200)
+                .message("Player deleted successfully")
                 .build();
     }
 }
