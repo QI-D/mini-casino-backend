@@ -1,6 +1,7 @@
 package com.casino.service;
 
 import com.casino.entity.Game;
+import com.casino.exception.GameNotFoundException;
 import com.casino.repository.GameRepo;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class GameService {
 
     public Game getGameById(Long id) {
         return gameRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+                .orElseThrow(() -> new GameNotFoundException("Game not found"));
     }
 
     public void saveAllGames(List<Game> games) {

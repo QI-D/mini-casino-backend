@@ -4,8 +4,10 @@ import com.casino.dto.BetSummaryDto;
 import com.casino.entity.Bet;
 import com.casino.entity.Game;
 import com.casino.entity.Player;
+import com.casino.exception.GameNotFoundException;
 import com.casino.exception.InsufficientBalanceException;
 import com.casino.exception.InvalidBetAmountException;
+import com.casino.exception.PlayerNotFoundException;
 import com.casino.repository.BetRepo;
 import com.casino.repository.GameRepo;
 import com.casino.repository.PlayerRepo;
@@ -28,9 +30,9 @@ public class BetService {
 
     public Bet placeBet(Long playerId, Long gameId, double betAmount) {
         Player player = playerRepo.findById(playerId)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found"));
         Game game = gameRepo.findById(gameId)
-                .orElseThrow(() -> new RuntimeException("Game not found"));
+                .orElseThrow(() -> new GameNotFoundException("Game not found"));
 
         // Validate bet amount
         if (betAmount < game.getMinBet() || betAmount > game.getMaxBet()) {
