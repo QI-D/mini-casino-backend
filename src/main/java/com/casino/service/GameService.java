@@ -22,4 +22,8 @@ public class GameService {
         return gameRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Game not found"));
     }
+
+    public void saveAllGames(List<Game> games) {
+        gameRepo.saveAll(games);
+    }
 }
