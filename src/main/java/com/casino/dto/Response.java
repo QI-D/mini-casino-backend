@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
-    private int status;
+    private Integer status;
     private String message;
     private final LocalDateTime timestamp = LocalDateTime.now();
 
@@ -19,8 +19,8 @@ public class Response {
     private String role;
     private String expirationTime;
 
-    private int totalPage;
-    private long totalElement;
+    private Integer totalPage;
+    private Long totalElement;
 
     private PlayerDto player;
     private List<PlayerDto> playerList;
