@@ -33,6 +33,7 @@ public class PlayerService {
 
         String hashedPassword = passwordEncoder.encode(player.getPassword());
         player.setPassword(hashedPassword);
+        player.setBalance(100);
 
         return playerRepo.save(player);
     }

@@ -27,7 +27,7 @@ public class AuthController {
         PlayerDto registeredPlayer = playerMapper.toDto(playerService.registerPlayer(playerMapper.toEntity(playerDto)));
         return Response.builder()
                 .status(200)
-                .message("Player registered successfully")
+                .message("Player registered successfully. $100 credit has been deposited.")
                 .player(registeredPlayer)
                 .build();
     }
