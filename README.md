@@ -244,7 +244,7 @@ Example Response:
 
 ### Bet Operations
 
-#### Place a bet `/bets/place`
+#### Place a bet `/bet/place`
 
 Headers:
 
@@ -276,7 +276,7 @@ Example Response:
 }
 ```
 
-### Get bet summary `GET /bets/summary`
+### Get bet summary `GET /bet/summary`
 
 Headers:
 

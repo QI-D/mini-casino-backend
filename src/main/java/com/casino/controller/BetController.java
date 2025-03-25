@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bets")
+@RequestMapping("/bet")
 public class BetController {
     private final BetService betService;
     private final PlayerService playerService;
