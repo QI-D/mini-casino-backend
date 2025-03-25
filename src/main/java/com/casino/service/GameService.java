@@ -1,7 +1,6 @@
 package com.casino.service;
 
 import com.casino.entity.Game;
-import com.casino.exception.DuplicateGameException;
 import com.casino.exception.GameNotFoundException;
 import com.casino.repository.GameRepo;
 import org.springframework.stereotype.Service;
@@ -37,5 +36,9 @@ public class GameService {
                 .collect(Collectors.toList());
 
         return gameRepo.saveAll(uniqueGames);
+    }
+
+    public List<Game> searchGamesByName(String name) {
+        return gameRepo.findByNameContainingIgnoreCase(name);
     }
 }

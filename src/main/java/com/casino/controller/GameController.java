@@ -73,4 +73,25 @@ public class GameController {
                     .build();
         }
     }
+
+    @GetMapping("/search")
+    public Response searchGames(@RequestParam(required = false) String name) {
+        List<GameDto> gameDtoList;
+
+        if (name == null || name.trim().isEmpty()) {
+            gameDtoList = gameService.getAllGames().stream()
+                    .map(gameMapper::toDto)
+                    .collect(Collectors.toList());
+        } else {
+            gameDtoList = gameService.searchGamesByName(name).stream()
+                    .map(gameMapper::toDto)
+                    .collect(Collectors.toList());
+        }
+
+        return Response.builder()
+                .status(200)
+                .message("Games found: " + gameDtoList.size())
+                .gameList(gameDtoList)
+                .build();
+    }
 }

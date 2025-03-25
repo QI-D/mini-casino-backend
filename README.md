@@ -221,6 +221,27 @@ Example partial success response:
 }
 ```
 
+#### Search game `GET /games/search?name={gameName}`
+
+Example Response:
+
+```json
+{
+    "status": 200,
+    "message": "Games found: 1",
+    "gameList": [
+        {
+            "id": 1,
+            "name": "Blackjack",
+            "chanceOfWinning": 0.42,
+            "winningMultiplier": 2.0,
+            "maxBet": 1000.0,
+            "minBet": 10.0
+        }
+    ]
+}
+```
+
 ### Bet Operations
 
 #### Place a bet `/bets/place`
