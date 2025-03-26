@@ -1,6 +1,7 @@
 package com.casino.controller;
 
 import com.casino.dto.BetDto;
+import com.casino.dto.BetReuqest;
 import com.casino.dto.BetSummaryDto;
 import com.casino.dto.Response;
 import com.casino.entity.Bet;
@@ -40,11 +41,10 @@ public class BetController {
     @PostMapping("/place")
     public Response placeBet(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam Long gameId,
-            @RequestParam double betAmount) {
+            @RequestBody BetReuqest betRequest) {
 
         Player player = playerService.getPlayerByUsername(userDetails.getUsername());
-        Bet placedBet = betService.placeBet(player.getId(), gameId, betAmount);
+        Bet placedBet = betService.placeBet(player.getId(), betRequest.getGameId(), betRequest.getBetAmount());
         BetDto betDto = betMapper.toDto(placedBet);
 
         return Response.builder()

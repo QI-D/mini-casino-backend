@@ -1,6 +1,7 @@
 package com.casino.controller;
 
 import com.casino.dto.BetDto;
+import com.casino.dto.BetReuqest;
 import com.casino.dto.BetSummaryDto;
 import com.casino.dto.Response;
 import com.casino.entity.Bet;
@@ -103,11 +104,15 @@ class BetControllerTest {
 
     @Test
     void placeBet_ShouldReturnSuccess_WhenValidBet() {
+        BetReuqest betRequest = new BetReuqest();
+        betRequest.setGameId(1L);
+        betRequest.setBetAmount(100.0);
+
         when(playerService.getPlayerByUsername("testuser")).thenReturn(testPlayer);
         when(betService.placeBet(1L, 1L, 100.0)).thenReturn(testBet);
         when(betMapper.toDto(testBet)).thenReturn(testBetDto);
 
-        Response response = betController.placeBet(userDetails, 1L, 100.0);
+        Response response = betController.placeBet(userDetails, betRequest);
 
         assertEquals(200, response.getStatus());
         assertEquals("Bet placed successfully", response.getMessage());
@@ -117,40 +122,57 @@ class BetControllerTest {
 
     @Test
     void placeBet_ShouldThrowException_WhenInvalidBetAmount() {
+        BetReuqest betRequest = new BetReuqest();
+        betRequest.setGameId(1L);
+        betRequest.setBetAmount(5000.0);
+
         when(playerService.getPlayerByUsername("testuser")).thenReturn(testPlayer);
         when(betService.placeBet(1L, 1L, 5000.0))
                 .thenThrow(new InvalidBetAmountException("Bet amount is outside the allowed range"));
 
         assertThrows(InvalidBetAmountException.class, () ->
-                betController.placeBet(userDetails, 1L, 5000.0));
+                betController.placeBet(userDetails, betRequest));
     }
 
     @Test
     void placeBet_ShouldThrowException_WhenInsufficientBalance() {
+        BetReuqest betRequest = new BetReuqest();
+        betRequest.setGameId(1L);
+        betRequest.setBetAmount(2000.0);
+
         when(playerService.getPlayerByUsername("testuser")).thenReturn(testPlayer);
         when(betService.placeBet(1L, 1L, 2000.0))
                 .thenThrow(new InsufficientBalanceException("Insufficient balance"));
 
         assertThrows(InsufficientBalanceException.class, () ->
-                betController.placeBet(userDetails, 1L, 2000.0));
+                betController.placeBet(userDetails, betRequest));
     }
 
     @Test
     void placeBet_ShouldThrowException_WhenGameNotFound() {
+        BetReuqest betRequest = new BetReuqest();
+        betRequest.setGameId(99L);
+        betRequest.setBetAmount(100.0);
+
         when(playerService.getPlayerByUsername("testuser")).thenReturn(testPlayer);
         when(betService.placeBet(1L, 99L, 100.0))
                 .thenThrow(new GameNotFoundException("Game not found"));
 
         assertThrows(GameNotFoundException.class, () ->
-                betController.placeBet(userDetails, 99L, 100.0));
+                betController.placeBet(userDetails, betRequest));
     }
 
     @Test
     void placeBet_ShouldThrowException_WhenPlayerNotFound() {
+
+        BetReuqest betRequest = new BetReuqest();
+        betRequest.setGameId(1L);
+        betRequest.setBetAmount(100.0);
+
         when(playerService.getPlayerByUsername("testuser"))
                 .thenThrow(new PlayerNotFoundException("Player not found"));
 
         assertThrows(PlayerNotFoundException.class, () ->
-                betController.placeBet(userDetails, 1L, 100.0));
+                betController.placeBet(userDetails, betRequest));
     }
 }
