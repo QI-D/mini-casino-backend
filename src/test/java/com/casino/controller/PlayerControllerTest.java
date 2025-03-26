@@ -1,5 +1,6 @@
 package com.casino.controller;
 
+import com.casino.dto.DepositRequest;
 import com.casino.dto.Response;
 import com.casino.exception.PlayerNotFoundException;
 import com.casino.service.PlayerService;
@@ -38,9 +39,13 @@ class PlayerControllerTest {
     void deposit_ShouldReturnSuccessResponse_WhenValidAmount() {
         double depositAmount = 500.0;
         double expectedBalance = TEST_BALANCE + depositAmount;
+
+        DepositRequest depositRequest = new DepositRequest();
+        depositRequest.setAmount(depositAmount);
+
         when(playerService.deposit(TEST_USERNAME, depositAmount)).thenReturn(expectedBalance);
 
-        Response response = playerController.deposit(userDetails, depositAmount);
+        Response response = playerController.deposit(userDetails, depositRequest);
 
         assertEquals(200, response.getStatus());
         assertEquals("Deposit successful", response.getMessage());
@@ -51,21 +56,28 @@ class PlayerControllerTest {
     @Test
     void deposit_ShouldThrowIllegalArgumentException_WhenNegativeAmount() {
         double invalidAmount = -100.0;
+
+        DepositRequest depositRequest = new DepositRequest();
+        depositRequest.setAmount(invalidAmount);
+
         when(playerService.deposit(TEST_USERNAME, invalidAmount))
                 .thenThrow(new IllegalArgumentException("Deposit amount must be positive"));
 
         assertThrows(IllegalArgumentException.class, () ->
-                playerController.deposit(userDetails, invalidAmount));
+                playerController.deposit(userDetails, depositRequest));
     }
 
     @Test
     void deposit_ShouldThrowPlayerNotFoundException_WhenPlayerNotFound() {
         double amount = 200.0;
+        DepositRequest depositRequest = new DepositRequest();
+        depositRequest.setAmount(amount);
+
         when(playerService.deposit(TEST_USERNAME, amount))
                 .thenThrow(new PlayerNotFoundException("Player not found"));
 
         assertThrows(PlayerNotFoundException.class, () ->
-                playerController.deposit(userDetails, amount));
+                playerController.deposit(userDetails, depositRequest));
     }
 
     @Test
@@ -92,20 +104,27 @@ class PlayerControllerTest {
     @Test
     void deposit_ShouldHandleZeroAmount() {
         double zeroAmount = 0.0;
+        DepositRequest depositRequest = new DepositRequest();
+        depositRequest.setAmount(zeroAmount);
+
         when(playerService.deposit(TEST_USERNAME, zeroAmount))
                 .thenThrow(new IllegalArgumentException("Deposit amount must be positive"));
 
         assertThrows(IllegalArgumentException.class, () ->
-                playerController.deposit(userDetails, zeroAmount));
+                playerController.deposit(userDetails, depositRequest));
     }
 
     @Test
     void deposit_ShouldHandleVeryLargeAmount() {
         double largeAmount = 1_000_000.0;
         double expectedBalance = TEST_BALANCE + largeAmount;
+
+        DepositRequest depositRequest = new DepositRequest();
+        depositRequest.setAmount(largeAmount);
+
         when(playerService.deposit(TEST_USERNAME, largeAmount)).thenReturn(expectedBalance);
 
-        Response response = playerController.deposit(userDetails, largeAmount);
+        Response response = playerController.deposit(userDetails, depositRequest);
 
         assertEquals(200, response.getStatus());
         assertEquals(expectedBalance, response.getBalance());

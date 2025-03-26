@@ -1,5 +1,6 @@
 package com.casino.controller;
 
+import com.casino.dto.DepositRequest;
 import com.casino.dto.Response;
 import com.casino.service.PlayerService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,9 +20,9 @@ public class PlayerController {
     @PostMapping("/deposit")
     public Response deposit(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam double amount) {
+            @RequestBody DepositRequest depositRequest) {
         String username = userDetails.getUsername();
-        double newBalance = playerService.deposit(username, amount);
+        double newBalance = playerService.deposit(username, depositRequest.getAmount());
 
         return Response.builder()
                 .status(200)
