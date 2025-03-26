@@ -82,7 +82,7 @@ class AuthControllerTest {
         Response response = authController.registerPlayer(testPlayerDto);
 
         assertEquals(200, response.getStatus());
-        assertEquals("Player registered successfully", response.getMessage());
+        assertEquals("Player registered successfully. $100 credit has been deposited.", response.getMessage());
         assertEquals(TEST_USERNAME, response.getPlayer().getUsername());
         verify(playerService, times(1)).registerPlayer(any(Player.class));
     }
