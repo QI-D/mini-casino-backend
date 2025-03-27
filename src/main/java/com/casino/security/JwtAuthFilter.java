@@ -25,24 +25,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String token = getTokenFromRequest(request);
 
         if (token != null) {
-            String username = jwtUtils.getUsernameFromToken(token);
+            try {
+                String username = jwtUtils.getUsernameFromToken(token);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                if (StringUtils.hasText(username) && jwtUtils.isTokenValid(token, userDetails)) {
+                    log.info("Valid JWT for {}", username);
 
-            if (StringUtils.hasText(username) && jwtUtils.isTokenValid(token, userDetails)) {
-                log.info("Valid JWT for {}", username);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
+            } catch (Exception e) {
+                log.error("JWT validation failed: {}", e.getMessage());
             }
+        } else {
+            log.info("No JWT token provided, skipping authentication.");
         }
 
         filterChain.doFilter(request, response);
