@@ -24,11 +24,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public Response registerPlayer(@RequestBody PlayerDto playerDto) {
-        PlayerDto registeredPlayer = playerMapper.toDto(playerService.registerPlayer(playerMapper.toEntity(playerDto)));
+        Player registeredPlayer = playerService.registerPlayer(playerMapper.toEntity(playerDto));
+
+        String token = jwtUtils.generateToken(registeredPlayer);
+        PlayerDto registeredPlayerDto = playerMapper.toDto(registeredPlayer);
+
         return Response.builder()
                 .status(200)
                 .message("Player registered successfully. $100 credit has been deposited.")
-                .player(registeredPlayer)
+                .token(token)
+                .player(registeredPlayerDto)
                 .build();
     }
 
