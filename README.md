@@ -1,14 +1,172 @@
 # Mini Casino
 
-Take home project for Omega Systems. A RESTful API for a casino platform with player management, game operations, and betting functionality.
+This repository contains a RESTful API for managing a casino platform, featuring player management, game operations, and betting functionality. It serves as a backend system for a casino-like application, where players can register, deposit funds, view their balance, and participate in games
+
+The frontend for this project is available at: [Mini Casino Frontend](https://github.com/QI-D/moni-casino-frontend)
 
 ## Table of Contents
 
-- [API Documentation](#api-documentation)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Running The Application](#4-running-the-application)
+  - [Running The Application](#running-the-application)
+- [Deployment](#deployment)
+- [API Documentation](#api-documentation)
+
+## Features
+
+### Authentication
+
+- **Player Registration**: Allows new players to register with their name, username, password, and birthdate.
+- **Login**: Enables players to authenticate and receive a JWT token for secure access to other features.
+
+### Player Operations
+
+- **Deposit Funds**: Players can deposit funds into their accounts.
+- **Check Balance**: Players can check their current account balance at any time.
+
+### Game Operations
+
+- **View All Games**: Get a list of all available casino games.
+- **View Game Details**: Retrieve detailed information about specific games.
+- **Upload New Games**: Admins can upload new games from an XML file.
+- **Search Games**: Players or admins can search for games by name.
+
+### Betting Operations
+
+- **Place a Bet**: Players can place bets on their chosen games.
+- **Bet Summary**: View a summary of all bets, including total amounts, winnings, and net profit.
+
+### Security
+
+- **JWT Authentication**: Secure player and betting operations with JSON Web Tokens (JWT).
+
+## Technologies Used
+
+- **Java 17**
+- **Spring Boot 3**
+- **Spring Security**
+- **JPA/Hibernate**
+- **MySQL**
+- **Maven**
+
+## Getting Started
+
+### Prerequisites
+
+- **Java 17**: Ensure you have Java Development Kit (JDK) 17 installed.
+- **MySQL**: A running MySQL database instance.
+- **Maven**: For building and managing dependencies.
+
+### Installation
+
+#### 1. Create a `.env` File
+
+Create a `.env` file in the root directory with the following environment variables. **Customize the values according to your setup:**
+
+```ini
+DATABASE_URL=jdbc:mysql://<DB_URL>
+DATABASE_USERNAME=<DB_USERNAME>
+DATABASE_PASSWORD=<DB_PASSWORD>
+ADMIN_USER=<ADMIN_USER>
+ADMIN_PASSWORD=<ADMIN_PASSWORD>
+JWT_SECRET=<JWT_SECRET>
+```
+
+Ensure you replace the above values with your actual database credentials, admin credentials, and JWT secret.
+
+#### 2. Install the Dependencies
+
+```bash
+mvn clean install
+```
+
+### Running the Application
+
+```bash
+mvn spring-boot:run
+```
+
+The server should start on `http:localhost:8080`.
+
+## Deployment
+
+To deploy the mini casino backend and frontend services using Docker, follow the steps below.
+
+### Prerequisites
+
+- **Docker**: Ensure Docker is installed and running on your system.
+- **Docker Compose**: Docker Compose is required to manage multi-container Docker applications.
+- **Git**: Ensure Git is installed to clone the repositories.
+
+### Cloning the Repositories
+
+1.  Clone the backend repository:
+
+    ```bash
+    git clone https://github.com/QI-D/mini-casino-backend.git
+    ```
+
+2.  Clone the frontend repository:
+
+    ```bash
+    git clone https://github.com/QI-D/mini-casino-frontend.git
+    ```
+
+3.  Place both the mini-casino-backend and mini-casino-frontend directories in a common parent directory.
+
+    Example structure:
+
+        /mini-casino
+            /mini-casino-backend
+            /mini-casino-frontend
+
+### Running the Deployment
+
+1. Navigate to the mini-casino-backend directory where the `docker-compose.yml` file is located.
+
+   ```bash
+   cd mini-casino-backend
+   ```
+
+2. Create a .env file in the root directory with the following environment variables. Customize the values according to your setup:
+
+   ```ini
+    DATABASE_URL=jdbc:mysql://<DB_URL>
+    DATABASE_NAME=<DATABASE_NAME>
+    DATABASE_USERNAME=<DATABASE_USERNAME>
+    DATABASE_PASSWORD=<DATABASE_PASSWORD>
+    ADMIN_USER=<ADMIN_USER>
+    ADMIN_PASSWORD=<ADMIN_PASSWORD>
+    JWT_SECRET=<JWT_SECRET>
+   ```
+
+3. Run the following command to start the backend, frontend, and MySQL services:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This command will:
+
+   - Build the Docker images for the backend and frontend.
+   - Start the services defined in the docker-compose.yml file.
+   - Expose the backend service on port 8080 and the frontend service on port 3000.
+
+4. Access the application:
+
+   - The backend will be available at `http://localhost:8080`.
+   - The frontend will be available at `http://localhost:3000`.
+
+### Stopping the Services
+
+To stop the running services, use the following command:
+
+```bash
+docker-compose down
+```
 
 ## API Documentation
 
@@ -227,18 +385,18 @@ Example Response:
 
 ```json
 {
-    "status": 200,
-    "message": "Games found: 1",
-    "gameList": [
-        {
-            "id": 1,
-            "name": "Blackjack",
-            "chanceOfWinning": 0.42,
-            "winningMultiplier": 2.0,
-            "maxBet": 1000.0,
-            "minBet": 10.0
-        }
-    ]
+  "status": 200,
+  "message": "Games found: 1",
+  "gameList": [
+    {
+      "id": 1,
+      "name": "Blackjack",
+      "chanceOfWinning": 0.42,
+      "winningMultiplier": 2.0,
+      "maxBet": 1000.0,
+      "minBet": 10.0
+    }
+  ]
 }
 ```
 
@@ -296,42 +454,3 @@ Example response:
   }
 }
 ```
-
-## Getting Started
-
-### Prerequisites
-
-- **Java 17**: Ensure you have Java Development Kit (JDK) 17 installed.
-- **MySQL**: A running MySQL database instance.
-- **Maven**: For building and managing dependencies.
-
-### Installation
-
-#### 1. Create a `.env` File
-
-Create a `.env` file in the root directory with the following environment variables. **Customize the values according to your setup:**
-
-```ini
-DATABASE_URL=jdbc:mysql://<DB_URL>
-DATABASE_USERNAME=<DB_USERNAME>
-DATABASE_PASSWORD=<DB_PASSWORD>
-ADMIN_USER=<ADMIN_USER>
-ADMIN_PASSWORD=<ADMIN_PASSWORD>
-JWT_SECRET=<JWT_SECRET>
-```
-
-Ensure you replace the above values with your actual database credentials, admin credentials, and JWT secret.
-
-#### 2. Install the Dependencies
-
-```bash
-mvn clean install
-```
-
-#### 3. Running the Application
-
-```bash
-mvn spring-boot:run
-```
-
-The server should start on `http:localhost:8080`.
