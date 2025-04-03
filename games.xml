@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<games>
+    <game>
+        <name>Blackjack</name>
+        <chanceOfWinning>0.42</chanceOfWinning>
+        <winningMultiplier>2.0</winningMultiplier>
+        <minBet>10.0</minBet>
+        <maxBet>1000.0</maxBet>
+    </game>
+    <game>
+        <name>Roulette</name>
+        <chanceOfWinning>0.48</chanceOfWinning>
+        <winningMultiplier>1.8</winningMultiplier>
+        <minBet>5.0</minBet>
+        <maxBet>500.0</maxBet>
+    </game>
+    <game>
+        <name>Slot Machine - Lucky 7s</name>
+        <chanceOfWinning>0.15</chanceOfWinning>
+        <winningMultiplier>10.0</winningMultiplier>
+        <minBet>1.0</minBet>
+        <maxBet>100.0</maxBet>
+    </game>
+    <game>
+        <name>Poker - Texas Hold'em</name>
+        <chanceOfWinning>0.35</chanceOfWinning>
+        <winningMultiplier>3.5</winningMultiplier>
+        <minBet>20.0</minBet>
+        <maxBet>2000.0</maxBet>
+    </game>
+    <game>
+        <name>Baccarat</name>
+        <chanceOfWinning>0.45</chanceOfWinning>
+        <winningMultiplier>1.95</winningMultiplier>
+        <minBet>25.0</minBet>
+        <maxBet>2500.0</maxBet>
+    </game>
+    <game>
+        <name>Craps</name>
+        <chanceOfWinning>0.49</chanceOfWinning>
+        <winningMultiplier>1.9</winningMultiplier>
+        <minBet>5.0</minBet>
+        <maxBet>500.0</maxBet>
+    </game>
+    <game>
+        <name>War</name>
+        <chanceOfWinning>0.50</chanceOfWinning>
+        <winningMultiplier>1.0</winningMultiplier>
+        <minBet>2.0</minBet>
+        <maxBet>200.0</maxBet>
+    </game>
+    <game>
+        <name>Video Poker</name>
+        <chanceOfWinning>0.25</chanceOfWinning>
+        <winningMultiplier>4.0</winningMultiplier>
+        <minBet>1.0</minBet>
+        <maxBet>100.0</maxBet>
+    </game>
+    <game>
+        <name>Wheel of Fortune</name>
+        <chanceOfWinning>0.08</chanceOfWinning>
+        <winningMultiplier>20.0</winningMultiplier>
+        <minBet>5.0</minBet>
+        <maxBet>300.0</maxBet>
+    </game>
+    <game>
+        <name>Keno</name>
+        <chanceOfWinning>0.10</chanceOfWinning>
+        <winningMultiplier>25.0</winningMultiplier>
+        <minBet>1.0</minBet>
+        <maxBet>500.0</maxBet>
+    </game>
+    <game>
+        <name>Dragon Tiger</name>
+        <chanceOfWinning>0.47</chanceOfWinning>
+        <winningMultiplier>1.95</winningMultiplier>
+        <minBet>10.0</minBet>
+        <maxBet>1500.0</maxBet>
+    </game>
+    <game>
+        <name>High-Low</name>
+        <chanceOfWinning>0.55</chanceOfWinning>
+        <winningMultiplier>1.5</winningMultiplier>
+        <minBet>5.0</minBet>
+        <maxBet>500.0</maxBet>
+    </game>
+    <game>
+        <name>Pai Gow Poker</name>
+        <chanceOfWinning>0.40</chanceOfWinning>
+        <winningMultiplier>3.0</winningMultiplier>
+        <minBet>15.0</minBet>
+        <maxBet>1000.0</maxBet>
+    </game>
+    <game>
+        <name>Sic Bo</name>
+        <chanceOfWinning>0.38</chanceOfWinning>
+        <winningMultiplier>3.2</winningMultiplier>
+        <minBet>10.0</minBet>
+        <maxBet>800.0</maxBet>
+    </game>
+    <game>
+        <name>Dice Duel</name>
+        <chanceOfWinning>0.52</chanceOfWinning>
+        <winningMultiplier>1.9</winningMultiplier>
+        <minBet>2.0</minBet>
+        <maxBet>300.0</maxBet>
+    </game>
+    <game>
+        <name>Coin Flip</name>
+        <chanceOfWinning>0.50</chanceOfWinning>
+        <winningMultiplier>1.0</winningMultiplier>
+        <minBet>1.0</minBet>
+        <maxBet>100.0</maxBet>
+    </game>
+</games>
