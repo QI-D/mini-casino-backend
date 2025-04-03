@@ -1,0 +1,63 @@
+networks:
+  minicasino:
+    driver: bridge
+
+services:
+  backend:
+    build:
+      context: ./minicasino-backend
+      dockerfile: Dockerfile
+    container_name: minicasino-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - minicasino
+    restart: always
+
+  frontend:
+    build:
+      context: ../minicasino-frontend
+    container_name: minicasino-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - minicasino
+
+  mysql:
+    image: mysql:5.7
+    container_name: minicasino-mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - minicasino
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
